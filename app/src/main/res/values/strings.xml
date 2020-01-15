@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">ELEC390_Ass1</string>
+    <string name="title_activity_grade">gradeActivity</string>
+    <string name="title_activity_profile">profileActivity</string>
 </resources>
