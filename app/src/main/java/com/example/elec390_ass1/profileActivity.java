@@ -5,29 +5,70 @@ import android.os.Bundle;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
 
 public class profileActivity extends AppCompatActivity {
+
+    EditText editText_name = null;
+    EditText editText_age = null;
+    EditText editText_studentID = null;
+    Button button_saveProfile = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
+
+        // Setup Toolbar
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
+        setupUI();
+
+        button_saveProfile.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
+            public void onClick(View v) {
+                //TODO create save profile function
             }
         });
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.toolbar_menu, menu);
+        return true;
+    }
+
+    // Creates action button in menu
+    //  This uses XML file from menu resource folder
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        //TODO make function to run here that enables editing profile fields.
+        Toast.makeText(this,"Edit Profile Selected",Toast.LENGTH_LONG).show();
+        return true;
+    }
+
+    protected void setupUI(){
+        editText_age = findViewById(R.id.editText_age);
+        editText_name = findViewById(R.id.editText_Name);
+        editText_studentID = findViewById(R.id.editText_studentID);
+        button_saveProfile = findViewById(R.id.button_saveProfile);
+
+        editText_studentID.setEnabled(false);
+        editText_name.setEnabled(false);
+        editText_age.setEnabled(false);
+    }
 }
