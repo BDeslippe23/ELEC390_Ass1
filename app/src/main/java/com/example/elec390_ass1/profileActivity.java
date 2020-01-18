@@ -57,8 +57,13 @@ public class profileActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         //TODO make function to run here that enables editing profile fields.
-        Toast.makeText(this,"Edit Profile Selected",Toast.LENGTH_LONG).show();
-        return true;
+        if(item.getItemId()==R.id.item_actionButton){
+            Toast.makeText(this,"Edit Profile Selected",Toast.LENGTH_LONG).show();
+            return true;
+        }
+        else{
+            return super.onOptionsItemSelected(item);
+        }
     }
 
     protected void setupUI(){
