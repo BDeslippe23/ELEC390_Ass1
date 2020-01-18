@@ -7,6 +7,7 @@
     tools:context=".MainActivity">
 
     <TextView
+        android:id="@+id/textView_info"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/button_goToGrades"
@@ -26,7 +27,9 @@
         android:id="@+id/button_goToProfile"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_above="@+id/textView_info"
         android:layout_centerHorizontal="true"
+        android:layout_marginBottom="118dp"
         android:text="Profile" />
 
 </RelativeLayout>

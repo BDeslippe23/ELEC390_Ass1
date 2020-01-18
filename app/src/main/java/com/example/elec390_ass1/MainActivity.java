@@ -4,34 +4,51 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
+
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
-    protected static final String TAG = "Main Activity";
-    Button button_goToProfile = null;
     Button button_goToGrades = null;
+    Button button_goToProfile = null;
+    TextView textView_info = null;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        setupUI();
+
         button_goToGrades.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                goToGradeActivity();
+                gotoGradeActivity();
             }
         });
+        button_goToProfile.setOnClickListener((new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                gotoProfileActivity();
+            }
+        }));
     }
 
     protected void setupUI(){
-        Log.d(TAG,"SetupUI Started");
-        button_goToGrades = (Button) findViewById(R.id.button_goToGrades);
-        button_goToProfile = (Button) findViewById(R.id.button_goToProfile);
+        button_goToGrades = findViewById(R.id.button_goToGrades);
+        button_goToProfile = findViewById(R.id.button_goToProfile);
+    }
 
+    protected void gotoGradeActivity(){
+        Intent toGrades = new Intent(MainActivity.this,gradeActivity.class);
+        startActivity(toGrades);
+    }
+
+    protected void gotoProfileActivity(){
+        Intent toProfile = new Intent(MainActivity.this,profileActivity.class);
+        startActivity(toProfile);
     }
 
     void goToGradeActivity(){
