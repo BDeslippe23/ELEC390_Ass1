@@ -14,7 +14,7 @@
         android:ems="10"
         android:hint="Student ID"
         android:inputType="textPersonName"
-        android:text="Student ID" />
+        android:maxLength="6"/>
 
     <EditText
         android:id="@+id/editText_age"
@@ -25,7 +25,8 @@
         android:ems="10"
         android:hint="Age"
         android:inputType="textPersonName"
-        android:text="Age" />
+        android:digits="1234567890"
+        android:maxLength="2"/>
 
     <EditText
         android:id="@+id/editText_Name"
@@ -37,7 +38,7 @@
         android:enabled="false"
         android:hint="Name"
         android:inputType="textPersonName"
-        android:text="Name" />
+        android:digits="abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"/>
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
@@ -53,7 +54,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/editText_studentID"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="100dp"
+        android:layout_marginTop="31dp"
         android:text="Save" />
 
 </RelativeLayout>

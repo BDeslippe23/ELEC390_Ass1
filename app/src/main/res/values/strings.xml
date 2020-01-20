@@ -2,4 +2,8 @@
     <string name="app_name">ELEC390_Ass1</string>
     <string name="title_activity_grade">gradeActivity</string>
     <string name="title_activity_profile">profileActivity</string>
+    <string name="profileFile">profileFile</string>
+    <string name="profileName">profileName</string>
+    <string name="profileAge">profileAge</string>
+    <string name="profileID">profileID</string>
 </resources>
