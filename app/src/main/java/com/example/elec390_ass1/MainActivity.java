@@ -13,16 +13,17 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.util.ArrayList;
+
 public class MainActivity extends AppCompatActivity {
 
 
-    protected static final String TAG = "MainActivity";
-
-    SharedPreferences sharedPref;
+    protected static final String TAG = "__MainActivity";
 
     Button button_goToGrades = null;
     Button button_goToProfile = null;
-    TextView textView_info = null;
+
+    protected SharedPreferencesHelper profileHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,16 +31,22 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         setupUI();
-
+        profileHelper = new SharedPreferencesHelper(MainActivity.this);
         //Clears all preferences at startup.
+        //  Used to repeatedly test inputs at app startup
+        //  This code is not necessary and will remain commented out for submission
+        /*
+        sharedPref = getSharedPreferences(getString(R.string.profileFile),Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.clear();
-        editor.commit();
+        editor.apply();
+         */
 
         button_goToGrades.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 gotoGradeActivity();
+                driver();
             }
         });
         button_goToProfile.setOnClickListener((new View.OnClickListener() {
@@ -55,7 +62,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-
         checkProfileName();
     }
 
@@ -72,12 +78,30 @@ public class MainActivity extends AppCompatActivity {
         startActivity(toProfile);
     }
     protected void checkProfileName(){
-        sharedPref = getSharedPreferences(getString(R.string.profileFile), Context.MODE_PRIVATE);
-        String name = sharedPref.getString(getString(R.string.profileName),"");
+        //sharedPref = getSharedPreferences(getString(R.string.profileFile), Context.MODE_PRIVATE);
+
+        //String name = sharedPref.getString(getString(R.string.profileName),"");
+
+        String name = profileHelper.getProfile().getpName();
+
         Log.d(TAG,"Name = "+name);
         if(name.equals("")){
             Toast.makeText(getApplicationContext(),"You must create a profile",Toast.LENGTH_SHORT).show();
             gotoProfileActivity();
+        }
+        else{
+            button_goToProfile.setText(name);
+        }
+    }
+    protected void driver(){
+        for(int j=0; j<5; j++) {
+            Course course = Course.generateRandomCourse();
+            ArrayList<Assignment> assignments = course.getAssignments();
+            System.out.println(course.getCourseTitle());
+            for (int i = 0; i < assignments.size(); i++) {
+                System.out.println(assignments.get(i).getAssignmentTitle()
+                        + " " + assignments.get(i).getAssignmentGrade());
+            }
         }
     }
 }

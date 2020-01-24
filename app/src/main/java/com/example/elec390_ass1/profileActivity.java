@@ -35,7 +35,7 @@ public class profileActivity extends AppCompatActivity {
     private String pAge;
     private String pID;
 
-    SharedPreferences sharedPref;
+    protected SharedPreferencesHelper profileHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,28 +48,25 @@ public class profileActivity extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         setupUI();
+        profileHelper = new SharedPreferencesHelper(profileActivity.this);
 
+        // Button commands
         button_saveProfile.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                UserProfile savedProfile = new UserProfile();
                 pName = editText_name.getText().toString();
                 pAge = editText_age.getText().toString();
                 pID = editText_studentID.getText().toString();
 
                 if(checkFields()){
-                    saveProfile();
+                    savedProfile.setpName(pName);
+                    savedProfile.setpAge(pAge);
+                    savedProfile.setpID(pID);
+                    profileHelper.saveProfile(savedProfile);
+                    Toast.makeText(getApplicationContext(),"Profile Saved",Toast.LENGTH_SHORT).show();
                 }
-                disableEditText();
-                //Logging for personal use
-                /*
-                if(pName.equals("")){
-                    Log.d(TAG,"pName = empty");
-                }
-                if(pName == null){
-                    Log.d(TAG,"pName = null");
-                }
-
-                 */
             }
         });
 
@@ -80,26 +77,26 @@ public class profileActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        sharedPref = getSharedPreferences(getString(R.string.profileFile),Context.MODE_PRIVATE);
-        editText_name.setText(sharedPref.getString(getString(R.string.profileName),""));
-        editText_age.setText(sharedPref.getString(getString(R.string.profileAge),""));
-        editText_studentID.setText(sharedPref.getString(getString(R.string.profileID),""));
+
+        editText_name.setText(profileHelper.getProfile().getpName());
+        editText_age.setText(profileHelper.getProfile().getpAge());
+        editText_studentID.setText(profileHelper.getProfile().getpID());
+        Log.d(TAG,"onResume calls shared preferences");
     }
 
-    // Menu Inflator
+    // Creates action button in menu
+    //  This uses XML file from menu resource folder
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
         inflater.inflate(R.menu.toolbar_menu, menu);
         return true;
     }
-
-    // Creates action button in menu
-    //  This uses XML file from menu resource folder
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if(item.getItemId()==R.id.item_actionButton){
             enableEditText();
+            button_saveProfile.setVisibility(View.VISIBLE);
             Toast.makeText(this,"Edit Profile Selected",Toast.LENGTH_SHORT).show();
             return true;
         }
@@ -107,6 +104,8 @@ public class profileActivity extends AppCompatActivity {
             return super.onOptionsItemSelected(item);
         }
     }
+
+    //SetupIO and other visual-aid functions
     protected void setupUI(){
         editText_age = findViewById(R.id.editText_age);
         editText_name = findViewById(R.id.editText_Name);
@@ -114,6 +113,7 @@ public class profileActivity extends AppCompatActivity {
         button_saveProfile = findViewById(R.id.button_saveProfile);
 
         disableEditText();
+        button_saveProfile.setVisibility(View.GONE);
     }           //Initializes UI
     protected void enableEditText(){
         editText_studentID.setEnabled(true);
@@ -126,7 +126,7 @@ public class profileActivity extends AppCompatActivity {
         editText_age.setEnabled(false);
     }   //Disables all edit text fields in this activity
 
-
+    //Function to check all inputs before file saving
     protected Boolean checkFields(){           //Checking if all the profile fields meet the requirements.
         if(pName.equals("") || pAge.equals("") || pID.equals("")){
             Toast.makeText(this,"all fields must be filled",Toast.LENGTH_SHORT).show();
@@ -142,19 +142,9 @@ public class profileActivity extends AppCompatActivity {
             Log.d(TAG,"checkField ID = empty");
             editText_studentID.requestFocus();
             Toast.makeText(this,"ID must be 8 digits and cannot start with 0",Toast.LENGTH_SHORT).show();
+            Log.d(TAG,"ID failed test");
             return false;
         }
         else return true;
-    }
-
-    protected void saveProfile(){
-        sharedPref = getSharedPreferences(getString(R.string.profileFile), Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPref.edit();
-
-        editor.putString(getString(R.string.profileName),pName);
-        editor.putString(getString(R.string.profileAge),pAge);
-        editor.putString(getString(R.string.profileID),pID);
-        editor.apply();
-        Toast.makeText(getApplicationContext(),"Profile Saved",Toast.LENGTH_SHORT).show();
     }
 }
