@@ -23,6 +23,11 @@ public class Assignment {
         int tempGrade = rnd.nextInt(100) + 1;
         return new Assignment(tempTitle, tempGrade);
     }
+
+    static public Assignment generateEmptyAssignment(){
+        String tempTitle = "No Assignments";
+        return new Assignment(tempTitle,0);
+    }
     //****get methods*****//
     public String getAssignmentTitle() {return assignmentTitle; }
     public int getAssignmentGrade() {return assignmentGrade;}

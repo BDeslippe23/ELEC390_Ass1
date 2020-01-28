@@ -1,41 +1,30 @@
 package com.example.elec390_ass1;
 
 import android.os.Bundle;
-
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
-import android.widget.SimpleAdapter;
 import android.widget.Toast;
-
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
+import java.util.Random;
 
 public class gradeActivity extends AppCompatActivity {
 
-    private static final String TAG = "__GradeActivity";
-    // TODO remove this array.
-    // Code from the example for listmaking
-    String mobileArray[] = {"Android","IPhone","WindowsMobile","Blackberry",
-            "WebOS","Ubuntu","Windows7","Max OS X"};
-    String mobileArray_desc[] = {"Android Description","IPhone Description","WindowsMobile Description",
-            "Blackberry Description","WebOS Description","Ubuntu Description","Windows7 Description","Max OS X Description"};
-    ArrayList<HashMap<String,String>> list = new ArrayList<HashMap<String,String>>();
-    private SimpleAdapter sa;
 
-    ListView listView_grades;
+    private static final String TAG = "__GradeActivity";
+    ArrayList<Course> courseList = new ArrayList<>();
+    ArrayList<HashMap<String,String>> myHashList = new ArrayList<HashMap<String, String>>();
+
+    ListView listView_Courses;
+    private customAdapter adapter;
+    boolean numVal = true; //used to toggle letter/numerical grades
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,16 +34,16 @@ public class gradeActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        Log.d(TAG,"onCreate");
 
         setupUI();
-
+        generateCourses();
+        generateListView(numVal);
 
     }
 
-
-
     protected void setupUI(){
-
+        listView_Courses = (ListView) findViewById(R.id.listView_Courses);
     }
 
     // Creates action button in menu
@@ -68,7 +57,7 @@ public class gradeActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if(item.getItemId()==R.id.item_actionButton_grades){
-            convertGrades();
+            numVal = convertGrades(numVal);
             Toast.makeText(this,"Convert Grades",Toast.LENGTH_SHORT).show();
             return true;
         }
@@ -76,9 +65,28 @@ public class gradeActivity extends AppCompatActivity {
             return super.onOptionsItemSelected(item);
         }
     }
+    protected boolean convertGrades(boolean numVal){
+        adapter = new customAdapter(getApplicationContext(), R.layout.custom_layout, courseList,!numVal);
+        listView_Courses.setAdapter(adapter);
+        return !numVal;
 
-
-    protected void convertGrades(){
-        //TODO write conversion function
+    }
+    protected void generateCourses(){
+        Random rnd = new Random();
+        int courseNo = rnd.nextInt(5);
+        for(int j=0; j<5; j++) {
+            Course course = Course.generateRandomCourse();
+            courseList.add(course);
+//            Log.d(TAG,"Course Title: "+course.getCourseTitle());
+//            for (int i = 0; i < assignments.size(); i++) {
+//
+//                Log.d(TAG,"Assignment: " + assignments.get(i).getAssignmentTitle()
+//                        + " " + assignments.get(i).getAssignmentGrade());
+//            }
+        }
+    }
+    protected void generateListView(boolean numVal){
+        adapter = new customAdapter(getApplicationContext(), R.layout.custom_layout, courseList,numVal);
+        listView_Courses.setAdapter(adapter);
     }
 }

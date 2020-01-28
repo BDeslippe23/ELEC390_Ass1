@@ -1,17 +1,10 @@
 package com.example.elec390_ass1;
 
-import android.content.Context;
-import android.content.SharedPreferences;
+
 import android.os.Bundle;
-
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
-
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-
-import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -60,24 +53,24 @@ public class profileActivity extends AppCompatActivity {
                 pAge = editText_age.getText().toString();
                 pID = editText_studentID.getText().toString();
 
+                // if the three inputs pass the check requirements, they are saved to shared preferences
                 if(checkFields()){
                     savedProfile.setpName(pName);
                     savedProfile.setpAge(pAge);
                     savedProfile.setpID(pID);
                     profileHelper.saveProfile(savedProfile);
+                    button_saveProfile.setVisibility(View.INVISIBLE);
+                    disableEditText();
                     Toast.makeText(getApplicationContext(),"Profile Saved",Toast.LENGTH_SHORT).show();
                 }
             }
         });
-
-
-
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-
+        //updates the text fields when the activity is on screen
         editText_name.setText(profileHelper.getProfile().getpName());
         editText_age.setText(profileHelper.getProfile().getpAge());
         editText_studentID.setText(profileHelper.getProfile().getpID());
@@ -96,6 +89,7 @@ public class profileActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         if(item.getItemId()==R.id.item_actionButton){
             enableEditText();
+            editText_name.requestFocus();
             button_saveProfile.setVisibility(View.VISIBLE);
             Toast.makeText(this,"Edit Profile Selected",Toast.LENGTH_SHORT).show();
             return true;

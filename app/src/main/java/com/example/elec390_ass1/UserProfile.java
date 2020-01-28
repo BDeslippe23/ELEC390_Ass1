@@ -15,6 +15,8 @@ public class UserProfile {
         this.pAge = Age;
         this.pID = ID;
     }
+
+    //Brings in the three fields from a passed profile
     public UserProfile(UserProfile importProfile){
         this.pName = importProfile.getpName();
         this.pAge = importProfile.getpAge();

@@ -10,16 +10,12 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
 import android.widget.Toast;
-
-import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
 
 
     protected static final String TAG = "__MainActivity";
-
     Button button_goToGrades = null;
     Button button_goToProfile = null;
 
@@ -29,29 +25,21 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
+        Log.d(TAG,"On Create");
         setupUI();
         profileHelper = new SharedPreferencesHelper(MainActivity.this);
-        //Clears all preferences at startup.
-        //  Used to repeatedly test inputs at app startup
-        //  This code is not necessary and will remain commented out for submission
-        /*
-        sharedPref = getSharedPreferences(getString(R.string.profileFile),Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPref.edit();
-        editor.clear();
-        editor.apply();
-         */
 
         button_goToGrades.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.d(TAG,"to Grade Activity");
                 gotoGradeActivity();
-                driver();
             }
         });
         button_goToProfile.setOnClickListener((new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.d(TAG,"to Profile Activity");
                 gotoProfileActivity();
             }
         }));
@@ -61,8 +49,10 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onResume() {
+        //Profile is checked everytime the activity is on screen
         super.onResume();
         checkProfileName();
+        Log.d(TAG,"Main Activity Resumed");
     }
 
     protected void setupUI(){
@@ -77,12 +67,9 @@ public class MainActivity extends AppCompatActivity {
         Intent toProfile = new Intent(MainActivity.this,profileActivity.class);
         startActivity(toProfile);
     }
-    protected void checkProfileName(){
-        //sharedPref = getSharedPreferences(getString(R.string.profileFile), Context.MODE_PRIVATE);
-
-        //String name = sharedPref.getString(getString(R.string.profileName),"");
-
+    protected void checkProfileName(){      //If there was a name stored via shared preferences the button text will be updated.
         String name = profileHelper.getProfile().getpName();
+
 
         Log.d(TAG,"Name = "+name);
         if(name.equals("")){
@@ -93,15 +80,5 @@ public class MainActivity extends AppCompatActivity {
             button_goToProfile.setText(name);
         }
     }
-    protected void driver(){
-        for(int j=0; j<5; j++) {
-            Course course = Course.generateRandomCourse();
-            ArrayList<Assignment> assignments = course.getAssignments();
-            System.out.println(course.getCourseTitle());
-            for (int i = 0; i < assignments.size(); i++) {
-                System.out.println(assignments.get(i).getAssignmentTitle()
-                        + " " + assignments.get(i).getAssignmentGrade());
-            }
-        }
-    }
+
 }
